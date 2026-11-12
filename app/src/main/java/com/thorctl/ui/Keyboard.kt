@@ -11,6 +11,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -103,6 +104,7 @@ private val KbTop = Color(0xFF000000)
 private val KbBottom = Color(0xFF000000)
 private val KeyFill = Color(0xFF17171A)
 private val KeyPressed = Color(0xFF2A2A2E)
+private val PopupFill = Color(0xFF17171A)
 /** Function keys (shift, backspace, layer keys, enter): iOS's darker grey. */
 private val FnFill = Color(0xFF0F0F11)
 private val KeyInk = Color(0xFFF2F2F5)
@@ -166,8 +168,8 @@ private fun ToolRow(state: KeyboardController.Ui) {
         Box(
             Modifier
                 .size(44.dp)
-                .raised(22.dp, pressed = false)
-                .clip(CircleShape)
+                .raised(6.dp, pressed = false)
+                .clip(KeyShape)
                 .background(KeyFill)
                 .pointerInput(Unit) { detectTapGestures(onTap = { KeyboardController.hideKeyboard() }) },
             contentAlignment = Alignment.Center,
@@ -412,9 +414,9 @@ private fun AccentPopup(p: KeyPopup) {
         Modifier
             .offset { IntOffset(p.x.roundToInt(), p.y.roundToInt()) }
             .size(with(d) { (p.cellW * p.options.size).toDp() }, with(d) { p.cellH.toDp() })
-            .shadow(6.dp, KeyShape, ambientColor = KeyShadow, spotColor = Color.Transparent)
+//            .shadow(6.dp, KeyShape, ambientColor = KeyShadow, spotColor = Color.Transparent)
             .clip(KeyShape)
-            .background(KeyFill)
+            .background(PopupFill)
             .padding(4.dp),
     ) {
         p.options.forEachIndexed { i, o ->
@@ -422,7 +424,7 @@ private fun AccentPopup(p: KeyPopup) {
                 Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(9.dp))
+                    .clip(RoundedCornerShape(3.dp))
                     .background(if (i == p.selected) Accent else Color.Transparent),
                 contentAlignment = Alignment.Center,
             ) {
@@ -744,8 +746,8 @@ private fun KeyFace(
     // Like iOS: character keys white (light grey when pressed); function keys darker grey that
     // flash white when pressed; an active shift turns white with a filled arrow.
     val fill = when {
-        active -> KeyFill
-        pressed -> if (fn) KeyFill else KeyPressed
+        active -> KeyPressed
+        pressed -> KeyPressed
         fn -> FnFill
         else -> KeyFill
     }
@@ -753,7 +755,7 @@ private fun KeyFace(
         modifier
             .padding(3.dp)
             .onGloballyPositioned { onFace(it.boundsInRoot()) }
-            .raised(12.dp, pressed)
+            .raised(6.dp, pressed)
             .clip(KeyShape)
             .background(fill),
         contentAlignment = Alignment.Center,
@@ -762,7 +764,7 @@ private fun KeyFace(
 
 /** Height of the hard edge under each key (the iOS keyboard's "raise"). */
 private val LIP: Dp = 2.dp
-private val LipColor = Color(0xFF5A5A64)
+private val LipColor = Color(0xFF2A2A30)
 
 /**
  * A key's raise: a hard, unblurred darker edge along its bottom, the face sitting [LIP] above it.
