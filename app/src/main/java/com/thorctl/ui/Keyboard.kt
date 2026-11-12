@@ -99,19 +99,19 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 // Cocoon's keyboard look: white rounded keys with a soft shadow on the bottom screen's gradient.
-private val KbTop = Color(0xFFEFEFF3)
-private val KbBottom = Color(0xFFCFCFDA)
-private val KeyFill = Color(0xFFFFFFFF)
-private val KeyPressed = Color(0xFFE2E2EA)
+private val KbTop = Color(0xFF000000)
+private val KbBottom = Color(0xFF000000)
+private val KeyFill = Color(0xFF17171A)
+private val KeyPressed = Color(0xFF2A2A2E)
 /** Function keys (shift, backspace, layer keys, enter): iOS's darker grey. */
-private val FnFill = Color(0xFFADB3BC)
-private val KeyInk = Color(0xFF1B1B1F)
-private val KeyInkSoft = Color(0xFF6B6B78)
-private val Accent = Color(0xFF6AA6F8)
-private val AccentDeep = Color(0xFF4F8EF0)
-private val PadFill = Color(0x8CFFFFFF)
-private val KeyShape = RoundedCornerShape(12.dp)
-private val KeyShadow = Color(0x40000000)
+private val FnFill = Color(0xFF0F0F11)
+private val KeyInk = Color(0xFFF2F2F5)
+private val KeyInkSoft = Color(0xFF8A8A94)
+private val Accent = Color(0xFFF2F2F5)
+private val AccentDeep = Color(0xFFD0D0D6)
+private val PadFill = Color(0xFF101012)
+private val KeyShape = RoundedCornerShape(6.dp)
+private val KeyShadow = Color(0x24FFFFFF)
 
 /**
  * The keyboard on the bottom screen: the lower half is a staggered QWERTY keyboard, the upper half
@@ -185,7 +185,7 @@ private fun Pill(icon: ImageVector, label: String, active: Boolean = false, onTa
         pressed -> Brush.verticalGradient(listOf(KeyPressed, KeyPressed))
         else -> Brush.verticalGradient(listOf(KeyFill, KeyFill))
     }
-    val ink = if (active) Color.White else KeyInk
+    val ink = if (active) Color.Black else KeyInk
     Row(
         Modifier
             .height(44.dp)
@@ -306,7 +306,7 @@ private fun Flash(state: KeyboardController.Ui, modifier: Modifier) {
     if (a > 0f || text != null) {
         Text(
             text ?: "",
-            color = Color.White,
+            color = Color.Black,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
             modifier = modifier
@@ -412,7 +412,7 @@ private fun AccentPopup(p: KeyPopup) {
         Modifier
             .offset { IntOffset(p.x.roundToInt(), p.y.roundToInt()) }
             .size(with(d) { (p.cellW * p.options.size).toDp() }, with(d) { p.cellH.toDp() })
-            .shadow(10.dp, KeyShape, ambientColor = KeyShadow, spotColor = KeyShadow)
+            .shadow(6.dp, KeyShape, ambientColor = KeyShadow, spotColor = Color.Transparent)
             .clip(KeyShape)
             .background(KeyFill)
             .padding(4.dp),
@@ -426,7 +426,7 @@ private fun AccentPopup(p: KeyPopup) {
                     .background(if (i == p.selected) Accent else Color.Transparent),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(o, color = if (i == p.selected) Color.White else KeyInk, fontSize = 24.sp)
+                Text(o, color = if (i == p.selected) Color.Black else KeyInk, fontSize = 24.sp)
             }
         }
     }
@@ -762,7 +762,7 @@ private fun KeyFace(
 
 /** Height of the hard edge under each key (the iOS keyboard's "raise"). */
 private val LIP: Dp = 2.dp
-private val LipColor = Color(0xFF9A9BA6)
+private val LipColor = Color(0xFF5A5A64)
 
 /**
  * A key's raise: a hard, unblurred darker edge along its bottom, the face sitting [LIP] above it.
